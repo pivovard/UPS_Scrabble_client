@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace UPS_Scrabble_client
 {
-    public partial class Form1 : Form
+    public partial class Form_Game : Form
     {
-        public Form1()
+        public Form_Game()
         {
             InitializeComponent();
         }
