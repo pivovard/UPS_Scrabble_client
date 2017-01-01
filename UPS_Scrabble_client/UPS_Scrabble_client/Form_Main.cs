@@ -14,6 +14,8 @@ namespace UPS_Scrabble_client
     {
         bool connected = false;
 
+        Form_Game FG;
+
         public Form_Main()
         {
             InitializeComponent();
@@ -32,6 +34,19 @@ namespace UPS_Scrabble_client
                 Network.Disconnect();
                 Btn_Connect.Text = "Connect";
             }
+        }
+
+        private void Btn_Start_Click(object sender, EventArgs e)
+        {
+            //if (!connected) return;
+            this.Hide();
+            FG = new Form_Game();
+            FG.Show();
+        }
+
+        private void Form_Main_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (connected) Network.Disconnect();
         }
     }
 }

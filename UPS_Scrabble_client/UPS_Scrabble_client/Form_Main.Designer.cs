@@ -35,6 +35,7 @@
             this.Btn_Connect = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.Tb_Nick = new System.Windows.Forms.TextBox();
+            this.Btn_Start = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -97,11 +98,22 @@
             this.Tb_Nick.Size = new System.Drawing.Size(92, 20);
             this.Tb_Nick.TabIndex = 6;
             // 
+            // Btn_Start
+            // 
+            this.Btn_Start.Location = new System.Drawing.Point(315, 90);
+            this.Btn_Start.Name = "Btn_Start";
+            this.Btn_Start.Size = new System.Drawing.Size(75, 23);
+            this.Btn_Start.TabIndex = 7;
+            this.Btn_Start.Text = "Start";
+            this.Btn_Start.UseVisualStyleBackColor = true;
+            this.Btn_Start.Click += new System.EventHandler(this.Btn_Start_Click);
+            // 
             // Form_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(595, 347);
+            this.ClientSize = new System.Drawing.Size(402, 131);
+            this.Controls.Add(this.Btn_Start);
             this.Controls.Add(this.Tb_Nick);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.Btn_Connect);
@@ -111,7 +123,9 @@
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form_Main";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Scrabble";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form_Main_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -126,6 +140,7 @@
         private System.Windows.Forms.Button Btn_Connect;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox Tb_Nick;
+        private System.Windows.Forms.Button Btn_Start;
     }
 }
 
