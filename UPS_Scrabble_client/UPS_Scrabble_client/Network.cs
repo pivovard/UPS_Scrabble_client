@@ -101,12 +101,15 @@ namespace UPS_Scrabble_client
 
                 if(size < 1)
                 {
-                    MessageBox.Show("Server unreachable.");
+                    MessageBox.Show("Server unavaible.");
+                    Program.FM.Btn_Connect.Text = "Connect";
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                //MessageBox.Show("Server unavaible.");
+                //Program.FM.Btn_Connect.Text = "Connect";
                 return;
             }
         }
