@@ -71,8 +71,7 @@ namespace UPS_Scrabble_client
                 return false;
             }
             
-            buffer = Encoding.ASCII.GetBytes(nick);
-            Console.WriteLine($"Send: {buffer.ToString()}");
+            buffer = Encoding.ASCII.GetBytes(nick + "\n");
             Socket.Send(buffer);
 
             Listenner = new Thread(Listen);
@@ -90,14 +89,18 @@ namespace UPS_Scrabble_client
         private static void Listen()
         {
             int size;
-            string msg;
+            string msg = "";
 
             try
             {
                 while ((size = Socket.Receive(buffer_in, msg_length, SocketFlags.None)) > 0)
                 {
-                    msg = Encoding.ASCII.GetString(buffer_in);
-                    Console.WriteLine(msg);
+                    msg += Encoding.ASCII.GetString(buffer_in);
+                    if (msg.Last() != '\n') continue;
+
+                    Console.WriteLine($"Recv: {msg}");
+
+                    msg = "";
                 }
 
                 if(size < 1)

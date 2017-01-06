@@ -14,8 +14,6 @@ namespace UPS_Scrabble_client
     {
         bool connected = false;
 
-        Form_Game FG;
-
         public Form_Main()
         {
             InitializeComponent();
@@ -40,8 +38,8 @@ namespace UPS_Scrabble_client
         {
             //if (!connected) return;
             this.Hide();
-            FG = new Form_Game();
-            FG.Show();
+            Program.FG = new Form_Game();
+            Program.FG.Show();
         }
 
         private void Form_Main_FormClosed(object sender, FormClosedEventArgs e)
