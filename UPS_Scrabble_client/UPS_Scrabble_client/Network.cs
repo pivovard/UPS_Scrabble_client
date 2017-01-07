@@ -30,7 +30,7 @@ namespace UPS_Scrabble_client
             string[] split = ip.Split('.');
             if (split.Count() != 4)
             {
-                MessageBox.Show("IP address format must be 1.1.1.1 !");
+                MessageBox.Show("IP address format must be 255.255.255.255 !");
                 return false;
             }
 
@@ -60,10 +60,10 @@ namespace UPS_Scrabble_client
             try
             {
                 Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                Console.WriteLine($"Socket created.");
+                Console.WriteLine("Socket created.");
 
                 Socket.Connect(ipEndPoint);
-                Console.WriteLine($"Connected to {Socket.RemoteEndPoint.ToString()}");
+                Console.WriteLine("Connected to" + Socket.RemoteEndPoint.ToString());
             }
             catch (Exception e)
             {
@@ -83,7 +83,7 @@ namespace UPS_Scrabble_client
         public static void Disconnect()
         {
             Socket.Close();
-            Console.WriteLine($"Disconnected.");
+            Console.WriteLine("Disconnected.");
         }
 
         private static void Listen()
@@ -95,15 +95,14 @@ namespace UPS_Scrabble_client
             {
                 while ((size = Socket.Receive(buffer_in, msg_length, SocketFlags.None)) > 0)
                 {
-                    msg += Encoding.ASCII.GetString(buffer_in);
-                    if (msg.Last() != '\n') continue;
-
-                    Console.WriteLine($"Recv: {msg}");
-
-                    msg = "";
+                    msg = Encoding.ASCII.GetString(buffer_in, 0, size);
+                    int i = msg.IndexOf("\n");
+                    if (i != -1)
+                        msg = msg.Substring(0, i);
+                    Console.WriteLine(msg);
                 }
 
-                if(size < 1)
+                if (size < 1)
                 {
                     MessageBox.Show("Server unavaible.");
                     Program.FM.Btn_Connect.Text = "Connect";
