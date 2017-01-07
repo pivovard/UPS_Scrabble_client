@@ -30,6 +30,7 @@ namespace UPS_Scrabble_client
             else
             {
                 Network.Disconnect();
+                connected = false;
                 Btn_Connect.Text = "Connect";
             }
         }
