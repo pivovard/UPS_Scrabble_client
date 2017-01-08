@@ -100,6 +100,7 @@
             // 
             // Btn_Start
             // 
+            this.Btn_Start.Enabled = false;
             this.Btn_Start.Location = new System.Drawing.Point(315, 90);
             this.Btn_Start.Name = "Btn_Start";
             this.Btn_Start.Size = new System.Drawing.Size(75, 23);
@@ -139,8 +140,8 @@
         private System.Windows.Forms.TextBox Tb_Port;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox Tb_Nick;
-        private System.Windows.Forms.Button Btn_Start;
         public System.Windows.Forms.Button Btn_Connect;
+        public System.Windows.Forms.Button Btn_Start;
     }
 }
 

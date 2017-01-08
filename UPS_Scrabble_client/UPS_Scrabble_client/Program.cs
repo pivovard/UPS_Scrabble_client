@@ -8,8 +8,10 @@ namespace UPS_Scrabble_client
 {
     static class Program
     {
-        public static Form_Main FM;
-        public static Form_Game FG;
+        public static Form_Main FormMain { get; set; }
+        public static Form_Game FormGame { get; set; }
+
+        public static Game Game { get; set; }
 
         /// <summary>
         /// The main entry point for the application.
@@ -19,7 +21,7 @@ namespace UPS_Scrabble_client
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(FM = new Form_Main());
+            Application.Run(FormMain = new Form_Main());
         }
     }
 }

@@ -53,6 +53,9 @@
             this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.L_Player1 = new System.Windows.Forms.Label();
+            this.L_Player2 = new System.Windows.Forms.Label();
+            this.Btn_Turn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Field_DataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Stack_DataGridView)).BeginInit();
             this.SuspendLayout();
@@ -284,11 +287,43 @@
             this.dataGridViewTextBoxColumn7.ReadOnly = true;
             this.dataGridViewTextBoxColumn7.Width = 50;
             // 
+            // L_Player1
+            // 
+            this.L_Player1.AutoSize = true;
+            this.L_Player1.Location = new System.Drawing.Point(824, 64);
+            this.L_Player1.Name = "L_Player1";
+            this.L_Player1.Size = new System.Drawing.Size(42, 13);
+            this.L_Player1.TabIndex = 3;
+            this.L_Player1.Text = "Player1";
+            // 
+            // L_Player2
+            // 
+            this.L_Player2.AutoSize = true;
+            this.L_Player2.Location = new System.Drawing.Point(824, 91);
+            this.L_Player2.Name = "L_Player2";
+            this.L_Player2.Size = new System.Drawing.Size(42, 13);
+            this.L_Player2.TabIndex = 4;
+            this.L_Player2.Text = "Player2";
+            // 
+            // Btn_Turn
+            // 
+            this.Btn_Turn.Enabled = false;
+            this.Btn_Turn.Location = new System.Drawing.Point(791, 743);
+            this.Btn_Turn.Name = "Btn_Turn";
+            this.Btn_Turn.Size = new System.Drawing.Size(75, 23);
+            this.Btn_Turn.TabIndex = 5;
+            this.Btn_Turn.Text = "Turn";
+            this.Btn_Turn.UseVisualStyleBackColor = true;
+            this.Btn_Turn.Click += new System.EventHandler(this.Btn_Turn_Click);
+            // 
             // Form_Game
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1118, 886);
+            this.Controls.Add(this.Btn_Turn);
+            this.Controls.Add(this.L_Player2);
+            this.Controls.Add(this.L_Player1);
             this.Controls.Add(this.Stack_DataGridView);
             this.Controls.Add(this.Btn_End);
             this.Controls.Add(this.Field_DataGridView);
@@ -299,12 +334,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.Field_DataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Stack_DataGridView)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.DataGridView Field_DataGridView;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
@@ -321,7 +355,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column14;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column15;
         private System.Windows.Forms.Button Btn_End;
-        private System.Windows.Forms.DataGridView Stack_DataGridView;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
@@ -329,5 +362,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
+        public System.Windows.Forms.DataGridView Field_DataGridView;
+        public System.Windows.Forms.DataGridView Stack_DataGridView;
+        private System.Windows.Forms.Label L_Player1;
+        private System.Windows.Forms.Label L_Player2;
+        public System.Windows.Forms.Button Btn_Turn;
     }
 }

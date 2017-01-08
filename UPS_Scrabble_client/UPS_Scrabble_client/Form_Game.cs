@@ -12,50 +12,57 @@ namespace UPS_Scrabble_client
 {
     public partial class Form_Game : Form
     {
-        char[][] field;
-        char[] stack;
-
-        int score = 0;
+        Game Game { get; set; }
 
         int c = 0;
 
 
-        public Form_Game()
+        public Form_Game(Game g)
         {
             InitializeComponent();
-            
-            init();
-            Random();
-        }
 
-        private void init()
-        {
-            field = new char[15][];
-            stack = new char[7];
+            Game = g;
 
-            for(int i = 0; i < 15; i++)
+            L_Player1.Text = Game.players[0];
+            L_Player2.Text = Game.players[1];
+
+            for (int i = 0; i < 15; i++)
             {
-                field[i] = new char[15];
                 Field_DataGridView.Rows.Add();
             }
 
             Field_DataGridView.Rows[7].Cells[7].Style.BackColor = Color.Khaki;
         }
 
-
-        private void Random()
+        private void Stack_DataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            Random r = new Random();
-            for (int i = 0; i < 7; i++)
-            {
-                stack[i] = (char)(65 + r.Next(26));
-            }
-
-            Stack_DataGridView.Rows.Clear();
-            Stack_DataGridView.Rows.Add(stack[0], stack[1], stack[2], stack[3], stack[4], stack[5], stack[6]);
+            c = e.ColumnIndex;
         }
 
+        private void Field_DataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (Game.stack[c] == '*') return;
 
+            Field_DataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.BackColor = Color.Khaki;
+            Field_DataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = Game.stack[c];
+            Game.field[e.RowIndex][e.ColumnIndex] = Game.stack[c];
+
+            Game.turn += ";" + e.RowIndex + "," + e.ColumnIndex;
+            Game.score++;
+
+            Game.stack[c] = '*';
+            Stack_DataGridView.Rows[0].Cells[c].Value = "";
+        }
+
+        private void Btn_Turn_Click(object sender, EventArgs e)
+        {
+            Btn_Turn.Enabled = false;
+
+            Network.Send("TURN:" + Game.score + Game.turn);
+            
+            Game.Random();
+            Game.turn = "";
+        }
 
 
 
@@ -66,26 +73,8 @@ namespace UPS_Scrabble_client
 
         private void Form_Game_FormClosed(object sender, FormClosedEventArgs e)
         {
-            this.Dispose();
-            Program.FM.Show();
-        }
-
-        private void Stack_DataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            c = e.ColumnIndex;
-        }
-
-        private void Field_DataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (stack[c] == '*') return;
-
-            Field_DataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.BackColor = Color.Khaki;
-            Field_DataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = stack[c];
-
-            score++;
-
-            stack[c] = '*';
-            Stack_DataGridView.Rows[0].Cells[c].Value = "";
+            this.Hide();
+            Program.FormMain.Show();
         }
     }
 }

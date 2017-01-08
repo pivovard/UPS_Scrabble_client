@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -100,21 +101,62 @@ namespace UPS_Scrabble_client
                     if (i != -1)
                         msg = msg.Substring(0, i);
                     Console.WriteLine(msg);
+                    Resolve(msg);
                 }
 
                 if (size < 1)
                 {
                     MessageBox.Show("Server unavaible.");
-                    Program.FM.Btn_Connect.Text = "Connect";
+                    Program.FormMain.Btn_Connect.Text = "Connect";
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                //MessageBox.Show("Server unavaible.");
-                //Program.FM.Btn_Connect.Text = "Connect";
                 return;
             }
+        }
+
+        private static void Resolve(string msg)
+        {
+            string[] type = msg.Split(':');
+
+            switch (type[0])
+            {
+                case "GAME":
+                    Program.Game = new Game(type[1]);
+                    Program.FormGame = new Form_Game(Program.Game);
+                    Program.Game.Random();
+
+                    //Program.FormMain.Btn_Start.Enabled = true;
+                    if (Program.FormMain.Btn_Start.InvokeRequired)
+                    {
+                        Program.FormMain.Btn_Start.Invoke(new Action(delegate() { Program.FormMain.Btn_Start.Enabled = true; }));
+                    }
+                    else
+                    {
+                        Program.FormMain.Btn_Start.Enabled = true;
+                    }
+                    
+                    break;
+
+                case "TURN":
+                    if (Program.FormMain.Btn_Start.InvokeRequired)
+                    {
+                        Program.FormMain.Btn_Start.Invoke(new Action(() => { Program.FormGame.Btn_Turn.Enabled = true; }));
+                    }
+                    else
+                    {
+                        Program.FormGame.Btn_Turn.Enabled = true;
+                    }
+                    break;
+            }
+        }
+
+        public static void Send(string msg)
+        {
+            buffer = Encoding.ASCII.GetBytes(msg + "\n");
+            Socket.Send(buffer);
         }
     }
 }
