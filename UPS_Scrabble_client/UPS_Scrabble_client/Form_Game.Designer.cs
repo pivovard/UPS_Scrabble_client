@@ -56,6 +56,8 @@
             this.L_Player1 = new System.Windows.Forms.Label();
             this.L_Player2 = new System.Windows.Forms.Label();
             this.Btn_Turn = new System.Windows.Forms.Button();
+            this.L_Score1 = new System.Windows.Forms.Label();
+            this.L_Score2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.Field_DataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Stack_DataGridView)).BeginInit();
             this.SuspendLayout();
@@ -316,11 +318,31 @@
             this.Btn_Turn.UseVisualStyleBackColor = true;
             this.Btn_Turn.Click += new System.EventHandler(this.Btn_Turn_Click);
             // 
+            // L_Score1
+            // 
+            this.L_Score1.AutoSize = true;
+            this.L_Score1.Location = new System.Drawing.Point(934, 64);
+            this.L_Score1.Name = "L_Score1";
+            this.L_Score1.Size = new System.Drawing.Size(13, 13);
+            this.L_Score1.TabIndex = 6;
+            this.L_Score1.Text = "0";
+            // 
+            // L_Score2
+            // 
+            this.L_Score2.AutoSize = true;
+            this.L_Score2.Location = new System.Drawing.Point(934, 91);
+            this.L_Score2.Name = "L_Score2";
+            this.L_Score2.Size = new System.Drawing.Size(13, 13);
+            this.L_Score2.TabIndex = 7;
+            this.L_Score2.Text = "0";
+            // 
             // Form_Game
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1118, 886);
+            this.Controls.Add(this.L_Score2);
+            this.Controls.Add(this.L_Score1);
             this.Controls.Add(this.Btn_Turn);
             this.Controls.Add(this.L_Player2);
             this.Controls.Add(this.L_Player1);
@@ -367,5 +389,7 @@
         private System.Windows.Forms.Label L_Player1;
         private System.Windows.Forms.Label L_Player2;
         public System.Windows.Forms.Button Btn_Turn;
+        private System.Windows.Forms.Label L_Score1;
+        private System.Windows.Forms.Label L_Score2;
     }
 }

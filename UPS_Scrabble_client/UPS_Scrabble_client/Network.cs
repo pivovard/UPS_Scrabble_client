@@ -64,7 +64,7 @@ namespace UPS_Scrabble_client
                 Console.WriteLine("Socket created.");
 
                 Socket.Connect(ipEndPoint);
-                Console.WriteLine("Connected to" + Socket.RemoteEndPoint.ToString());
+                Console.WriteLine("Connected to " + Socket.RemoteEndPoint.ToString());
             }
             catch (Exception e)
             {
@@ -100,7 +100,7 @@ namespace UPS_Scrabble_client
                     int i = msg.IndexOf("\n");
                     if (i != -1)
                         msg = msg.Substring(0, i);
-                    Console.WriteLine(msg);
+                    Console.WriteLine("Recv: " + msg);
                     Resolve(msg);
                 }
 
@@ -124,11 +124,10 @@ namespace UPS_Scrabble_client
             switch (type[0])
             {
                 case "GAME":
-                    Program.Game = new Game(type[1]);
+                    Program.Game = new Game(type[1], type[2], Program.FormMain.Tb_Nick.Text);
                     Program.FormGame = new Form_Game(Program.Game);
                     Program.Game.Random();
-
-                    //Program.FormMain.Btn_Start.Enabled = true;
+                    
                     if (Program.FormMain.Btn_Start.InvokeRequired)
                     {
                         Program.FormMain.Btn_Start.Invoke(new Action(delegate() { Program.FormMain.Btn_Start.Enabled = true; }));
@@ -143,18 +142,24 @@ namespace UPS_Scrabble_client
                 case "TURN":
                     if (Program.FormMain.Btn_Start.InvokeRequired)
                     {
-                        Program.FormMain.Btn_Start.Invoke(new Action(() => { Program.FormGame.Btn_Turn.Enabled = true; }));
+                        Program.FormMain.Btn_Start.Invoke(new Action(() => { Program.FormGame.Btn_Turn.Enabled = true; Program.FormGame.turn = true; }));
                     }
                     else
                     {
                         Program.FormGame.Btn_Turn.Enabled = true;
+                        Program.FormGame.turn = true;
                     }
+                    break;
+
+                case "TURNP":
+                    Program.Game.RecvTurn(type[1], type[2]);
                     break;
             }
         }
 
         public static void Send(string msg)
         {
+            Console.WriteLine("Send: " + msg);
             buffer = Encoding.ASCII.GetBytes(msg + "\n");
             Socket.Send(buffer);
         }

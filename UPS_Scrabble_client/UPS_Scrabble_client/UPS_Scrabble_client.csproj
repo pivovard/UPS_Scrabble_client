@@ -75,6 +75,7 @@
     </Compile>
     <Compile Include="Game.cs" />
     <Compile Include="Network.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form_Game.resx">

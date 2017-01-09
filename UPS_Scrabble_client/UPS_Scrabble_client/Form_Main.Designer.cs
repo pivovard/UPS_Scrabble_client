@@ -139,9 +139,9 @@
         private System.Windows.Forms.TextBox Tb_IP;
         private System.Windows.Forms.TextBox Tb_Port;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox Tb_Nick;
         public System.Windows.Forms.Button Btn_Connect;
         public System.Windows.Forms.Button Btn_Start;
+        public System.Windows.Forms.TextBox Tb_Nick;
     }
 }
 
