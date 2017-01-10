@@ -86,6 +86,7 @@ namespace UPS_Scrabble_client
                 field[x][y] = c[2].ElementAt(0);
 
                 Program.FormGame.Field_DataGridView.Rows[x].Cells[y].Value = c[2].ElementAt(0);
+                Program.FormGame.Field_DataGridView.Rows[x].Cells[y].Style.BackColor = System.Drawing.Color.Khaki;
             }
         }
 

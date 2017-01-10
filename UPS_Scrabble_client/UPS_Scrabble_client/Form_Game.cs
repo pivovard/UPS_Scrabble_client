@@ -92,6 +92,69 @@ namespace UPS_Scrabble_client
             Game.turn = "";
         }
 
+        private void Btn_Back_Click(object sender, EventArgs e)
+        {
+            if (Game.turn == "") return;
+
+            string last = Game.turn.Split(';').Last();
+
+            string[] c = last.Split(',');
+            int x = int.Parse(c[0]);
+            int y = int.Parse(c[1]);
+
+            Game.field[x][y] = '\0';
+            Field_DataGridView.Rows[x].Cells[y].Value = "";
+            Field_DataGridView.Rows[x].Cells[y].Style.BackColor = Color.White;
+
+            for(int i = 0; i < 7; i++)
+            {
+                if(Game.stack[i] == '\0')
+                {
+                    Game.stack[i] = c[2].First();
+                    Stack_DataGridView.Rows[0].Cells[i].Value = c[2].First();
+                    break;
+                }
+            }
+
+            Game.Player.score--;
+
+            Game.turn = Game.turn.Substring(0, Game.turn.Length - last.Length - 1);
+        }
+
+        private void Btn_Reset_Click(object sender, EventArgs e)
+        {
+            if (Game.turn == "") return;
+
+            string[] turn = Game.turn.Split(';');
+
+            foreach(var t in turn)
+            {
+                if (t == "") continue;  //turn[0] je "" -> score
+
+                string[] c = t.Split(',');
+                int x = int.Parse(c[0]);
+                int y = int.Parse(c[1]);
+
+                Game.field[x][y] = '\0';
+                Field_DataGridView.Rows[x].Cells[y].Value = "";
+                Field_DataGridView.Rows[x].Cells[y].Style.BackColor = Color.White;
+
+                for (int i = 0; i < 7; i++)
+                {
+                    if (Game.stack[i] == '\0')
+                    {
+                        Game.stack[i] = c[2].First();
+                        Stack_DataGridView.Rows[0].Cells[i].Value = c[2].First();
+                        break;
+                    }
+                }
+
+                Game.Player.score--;
+            }
+            
+            Game.turn = "";
+        }
+
 
 
 
@@ -105,5 +168,7 @@ namespace UPS_Scrabble_client
             this.Hide();
             Program.FormMain.Show();
         }
+
+        
     }
 }

@@ -58,6 +58,8 @@
             this.Btn_Turn = new System.Windows.Forms.Button();
             this.L_Score1 = new System.Windows.Forms.Label();
             this.L_Score2 = new System.Windows.Forms.Label();
+            this.Btn_Reset = new System.Windows.Forms.Button();
+            this.Btn_Back = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Field_DataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Stack_DataGridView)).BeginInit();
             this.SuspendLayout();
@@ -336,11 +338,33 @@
             this.L_Score2.TabIndex = 7;
             this.L_Score2.Text = "0";
             // 
+            // Btn_Reset
+            // 
+            this.Btn_Reset.Location = new System.Drawing.Point(791, 682);
+            this.Btn_Reset.Name = "Btn_Reset";
+            this.Btn_Reset.Size = new System.Drawing.Size(75, 23);
+            this.Btn_Reset.TabIndex = 8;
+            this.Btn_Reset.Text = "Reset";
+            this.Btn_Reset.UseVisualStyleBackColor = true;
+            this.Btn_Reset.Click += new System.EventHandler(this.Btn_Reset_Click);
+            // 
+            // Btn_Back
+            // 
+            this.Btn_Back.Location = new System.Drawing.Point(791, 653);
+            this.Btn_Back.Name = "Btn_Back";
+            this.Btn_Back.Size = new System.Drawing.Size(75, 23);
+            this.Btn_Back.TabIndex = 9;
+            this.Btn_Back.Text = "<";
+            this.Btn_Back.UseVisualStyleBackColor = true;
+            this.Btn_Back.Click += new System.EventHandler(this.Btn_Back_Click);
+            // 
             // Form_Game
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1118, 886);
+            this.Controls.Add(this.Btn_Back);
+            this.Controls.Add(this.Btn_Reset);
             this.Controls.Add(this.L_Score2);
             this.Controls.Add(this.L_Score1);
             this.Controls.Add(this.Btn_Turn);
@@ -391,5 +415,7 @@
         public System.Windows.Forms.Button Btn_Turn;
         private System.Windows.Forms.Label L_Score1;
         private System.Windows.Forms.Label L_Score2;
+        private System.Windows.Forms.Button Btn_Reset;
+        private System.Windows.Forms.Button Btn_Back;
     }
 }
