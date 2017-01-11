@@ -113,7 +113,7 @@ namespace UPS_Scrabble_client
                 if (size < 1)
                 {
                     MessageBox.Show("Server unavaible.");
-                    Program.FormMain.Btn_Connect.Text = "Connect";
+                    Program.FormMain.Button_Connect_Click(Program.FormMain.Btn_Connect, new EventArgs());
                 }
             }
             catch (Exception e)
@@ -163,8 +163,40 @@ namespace UPS_Scrabble_client
 
                 case "NICK":
                     MessageBox.Show("Nick allready in use.");
+                    //Disconnect
                     Program.FormMain.Button_Connect_Click(Program.FormMain.Btn_Connect, new EventArgs());
                     Disconnect();
+                    break;
+
+                case "RETURN":
+                    DialogResult res = MessageBox.Show("Do you want to return to the existing game?", "Return", MessageBoxButtons.YesNo);
+                    if (res == DialogResult.Yes)
+                    {
+                        Send("RETURN");
+                    }
+                    else
+                    {
+                        Send("NEW");
+                    }
+                    break;
+
+                case "GAMER":
+                    Program.Game = new Game(type[1], type[2], type[3], nick, n);
+                    Program.FormGame = new Form_Game(Program.Game);
+                    Program.Game.Random();
+
+                    if (Program.FormMain.Btn_Start.InvokeRequired)
+                    {
+                        Program.FormMain.Btn_Start.Invoke(new Action(delegate () { Program.FormMain.Btn_Start.Enabled = true; }));
+                    }
+                    else
+                    {
+                        Program.FormMain.Btn_Start.Enabled = true;
+                    }
+                    break;
+
+
+                default:
                     break;
             }
         }

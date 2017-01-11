@@ -177,11 +177,19 @@ namespace UPS_Scrabble_client
 
         private void Btn_End_Click(object sender, EventArgs e)
         {
-            this.Close();
+            DialogResult res = MessageBox.Show("Leave game?", "Exit", MessageBoxButtons.OKCancel);
+            if (res == DialogResult.OK)
+            {
+                this.Close();
+            }
         }
 
         private void Form_Game_FormClosed(object sender, FormClosedEventArgs e)
         {
+            Network.Send("END");
+            //Disconnect
+            Program.FormMain.Button_Connect_Click(Program.FormMain.Btn_Connect, new EventArgs());
+
             this.Hide();
             Program.FormMain.Show();
         }

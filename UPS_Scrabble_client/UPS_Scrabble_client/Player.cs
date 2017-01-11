@@ -20,5 +20,14 @@ namespace UPS_Scrabble_client
             ID = int.Parse(split[0]);
             nick = split[1];
         }
+
+        public Player(string pl, bool r)
+        {
+            string[] split = pl.Split(',');
+
+            ID = int.Parse(split[0]);
+            nick = split[1];
+            score = int.Parse(split[2]);
+        }
     }
 }

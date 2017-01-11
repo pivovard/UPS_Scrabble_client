@@ -37,19 +37,33 @@ namespace UPS_Scrabble_client
 
                 connected = Network.Connect(Tb_IP.Text, Tb_Port.Text, Tb_Nick.Text, n);
                 if(connected)
-                    Btn_Connect.Text = "Disconnect";
+                    if (Btn_Connect.InvokeRequired)
+                    {
+                        Btn_Connect.Invoke(new Action(delegate () { Btn_Connect.Text = "Disconnect"; }));
+                    }
+                    else
+                    {
+                        Btn_Connect.Text = "Disconnect";
+                    }
             }
             else
             {
                 Network.Disconnect();
                 connected = false;
-                Btn_Connect.Text = "Connect";
+                if (Btn_Connect.InvokeRequired)
+                {
+                    Btn_Connect.Invoke(new Action(delegate () { Btn_Connect.Text = "Connect"; }));
+                }
+                else
+                {
+                    Btn_Connect.Text = "Connect";
+                }
             }
         }
 
         private void Btn_Start_Click(object sender, EventArgs e)
         {
-            //if (!connected) return;
+            if (!connected) return;
             this.Hide();
             Program.FormGame.Show();
         }
