@@ -18,6 +18,9 @@ namespace UPS_Scrabble_client
         public static byte[] ip;
         public static int port;
 
+        static string nick;
+        static int n;
+
         public static byte[] buffer = new byte[64];
         public static byte[] buffer_in = new byte[msg_length];
         public static byte[] buffer_out = new byte[msg_length];
@@ -26,7 +29,7 @@ namespace UPS_Scrabble_client
 
         public static Thread Listenner { get; set; }
 
-        public static bool Connect(string ip, string port, string nick)
+        public static bool Connect(string ip, string port, string nick, int n)
         {
             string[] split = ip.Split('.');
             if (split.Count() != 4)
@@ -53,6 +56,9 @@ namespace UPS_Scrabble_client
                 return false;
             }
 
+            Network.nick = nick;
+            Network.n = n;
+
             //IPHostEntry ipHostEntry = Dns.Resolve(Dns.GetHostName());
             //IPAddress ipAddress = new IPAddress(ipHostEntry);
             IPAddress ipAddress = new IPAddress(Network.ip);
@@ -72,7 +78,7 @@ namespace UPS_Scrabble_client
                 return false;
             }
             
-            buffer = Encoding.ASCII.GetBytes(nick + "\n");
+            buffer = Encoding.ASCII.GetBytes(nick + ";" + n.ToString() + "\n");
             Socket.Send(buffer);
 
             Listenner = new Thread(Listen);
@@ -124,7 +130,7 @@ namespace UPS_Scrabble_client
             switch (type[0])
             {
                 case "GAME":
-                    Program.Game = new Game(type[1], type[2], Program.FormMain.Tb_Nick.Text);
+                    Program.Game = new Game(type[1], type[2], nick, n);
                     Program.FormGame = new Form_Game(Program.Game);
                     Program.Game.Random();
                     
@@ -153,6 +159,12 @@ namespace UPS_Scrabble_client
 
                 case "TURNP":
                     Program.Game.RecvTurn(type[1], type[2]);
+                    break;
+
+                case "NICK":
+                    MessageBox.Show("Nick allready in use.");
+                    Program.FormMain.Button_Connect_Click(Program.FormMain.Btn_Connect, new EventArgs());
+                    Disconnect();
                     break;
             }
         }

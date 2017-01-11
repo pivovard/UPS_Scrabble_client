@@ -60,6 +60,10 @@
             this.L_Score2 = new System.Windows.Forms.Label();
             this.Btn_Reset = new System.Windows.Forms.Button();
             this.Btn_Back = new System.Windows.Forms.Button();
+            this.L_Player3 = new System.Windows.Forms.Label();
+            this.L_Player4 = new System.Windows.Forms.Label();
+            this.L_Score3 = new System.Windows.Forms.Label();
+            this.L_Score4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.Field_DataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Stack_DataGridView)).BeginInit();
             this.SuspendLayout();
@@ -358,11 +362,51 @@
             this.Btn_Back.UseVisualStyleBackColor = true;
             this.Btn_Back.Click += new System.EventHandler(this.Btn_Back_Click);
             // 
+            // L_Player3
+            // 
+            this.L_Player3.AutoSize = true;
+            this.L_Player3.Location = new System.Drawing.Point(824, 118);
+            this.L_Player3.Name = "L_Player3";
+            this.L_Player3.Size = new System.Drawing.Size(42, 13);
+            this.L_Player3.TabIndex = 10;
+            this.L_Player3.Text = "Player3";
+            // 
+            // L_Player4
+            // 
+            this.L_Player4.AutoSize = true;
+            this.L_Player4.Location = new System.Drawing.Point(824, 145);
+            this.L_Player4.Name = "L_Player4";
+            this.L_Player4.Size = new System.Drawing.Size(42, 13);
+            this.L_Player4.TabIndex = 11;
+            this.L_Player4.Text = "Player4";
+            // 
+            // L_Score3
+            // 
+            this.L_Score3.AutoSize = true;
+            this.L_Score3.Location = new System.Drawing.Point(934, 118);
+            this.L_Score3.Name = "L_Score3";
+            this.L_Score3.Size = new System.Drawing.Size(13, 13);
+            this.L_Score3.TabIndex = 12;
+            this.L_Score3.Text = "0";
+            // 
+            // L_Score4
+            // 
+            this.L_Score4.AutoSize = true;
+            this.L_Score4.Location = new System.Drawing.Point(934, 145);
+            this.L_Score4.Name = "L_Score4";
+            this.L_Score4.Size = new System.Drawing.Size(13, 13);
+            this.L_Score4.TabIndex = 13;
+            this.L_Score4.Text = "0";
+            // 
             // Form_Game
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1118, 886);
+            this.Controls.Add(this.L_Score4);
+            this.Controls.Add(this.L_Score3);
+            this.Controls.Add(this.L_Player4);
+            this.Controls.Add(this.L_Player3);
             this.Controls.Add(this.Btn_Back);
             this.Controls.Add(this.Btn_Reset);
             this.Controls.Add(this.L_Score2);
@@ -417,5 +461,9 @@
         private System.Windows.Forms.Label L_Score2;
         private System.Windows.Forms.Button Btn_Reset;
         private System.Windows.Forms.Button Btn_Back;
+        private System.Windows.Forms.Label L_Player3;
+        private System.Windows.Forms.Label L_Player4;
+        private System.Windows.Forms.Label L_Score3;
+        private System.Windows.Forms.Label L_Score4;
     }
 }

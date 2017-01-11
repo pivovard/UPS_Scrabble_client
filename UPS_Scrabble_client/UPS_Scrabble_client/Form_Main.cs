@@ -12,18 +12,30 @@ namespace UPS_Scrabble_client
 {
     public partial class Form_Main : Form
     {
-        bool connected = false;
+        public bool connected = false;
 
         public Form_Main()
         {
             InitializeComponent();
         }
 
-        private void Button_Connect_Click(object sender, EventArgs e)
+        public void Button_Connect_Click(object sender, EventArgs e)
         {
+            //lock on connected
             if (!connected)
             {
-                connected = Network.Connect(Tb_IP.Text, Tb_Port.Text, Tb_Nick.Text);
+                int n;
+                if (radioButton1.Checked) {
+                    n = 2;
+                }
+                else if (radioButton2.Checked) {
+                    n = 3;
+                }
+                else {
+                    n = 4;
+                }
+
+                connected = Network.Connect(Tb_IP.Text, Tb_Port.Text, Tb_Nick.Text, n);
                 if(connected)
                     Btn_Connect.Text = "Disconnect";
             }

@@ -9,20 +9,21 @@ namespace UPS_Scrabble_client
     public class Game
     {
         public int ID;
+        public int N;
+
         public Player[] Players;
         public Player Player;
 
         public char[][] field;
         public char[] stack;
 
-        public int score = 0;
-
         public string turn = "";
 
 
-        public Game(string id, string pl, string nick)
+        public Game(string id, string pl, string nick, int n)
         {
             ID = int.Parse(id);
+            N = n;
 
             //init hracu
             string[] pls = pl.Split(';');

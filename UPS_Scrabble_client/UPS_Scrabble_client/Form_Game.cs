@@ -27,6 +27,15 @@ namespace UPS_Scrabble_client
             L_Player1.Text = Game.Players[0].nick;
             L_Player2.Text = Game.Players[1].nick;
 
+            if (Game.N == 3)
+            {
+                L_Player3.Text = Game.Players[2].nick;
+            }
+            if (Game.N == 4)
+            {
+                L_Player4.Text = Game.Players[3].nick;
+            }
+
             for (int i = 0; i < 15; i++)
             {
                 Field_DataGridView.Rows.Add();
@@ -39,6 +48,14 @@ namespace UPS_Scrabble_client
         {
             L_Score1.Text = Game.Players[0].score.ToString();
             L_Score2.Text = Game.Players[1].score.ToString();
+
+            if(Game.N == 3){
+                L_Score3.Text = Game.Players[2].score.ToString();
+            }
+            if (Game.N == 4)
+            {
+                L_Score4.Text = Game.Players[3].score.ToString();
+            }
         }
 
         private bool IsMove(int x, int y)
@@ -86,7 +103,7 @@ namespace UPS_Scrabble_client
 
             UpdateScore();
             
-            Network.Send("TURN:" + Game.ID + ':' + Game.score + Game.turn);
+            Network.Send("TURN:" + Game.ID + ':' + Game.Player.score + Game.turn);
             
             Game.Random();
             Game.turn = "";
