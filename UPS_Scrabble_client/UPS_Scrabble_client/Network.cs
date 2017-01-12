@@ -198,6 +198,15 @@ namespace UPS_Scrabble_client
                     }
                     break;
 
+                case "DISC":
+                    MessageBox.Show("Player " + Program.Game.Players.Where(p => p.ID == int.Parse(type[1])).First().nick + " disconnected.");
+                    break;
+
+                case "RECN":
+                    MessageBox.Show("Player " + Program.Game.Players.Where(p => p.ID == int.Parse(type[1])).First().nick + " reconnected.");
+                    break;
+
+
 
                 default:
                     break;
