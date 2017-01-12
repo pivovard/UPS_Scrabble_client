@@ -61,7 +61,7 @@ namespace UPS_Scrabble_client
 
             for (int i = 0; i < pls.Count(); i++)
             {
-                Players[i] = new Player(pls[i]);
+                Players[i] = new Player(pls[i], true);
             }
 
             //mistni hrac
@@ -93,8 +93,8 @@ namespace UPS_Scrabble_client
 
                 field[x][y] = c[2].ElementAt(0);
 
-                Program.FormGame.Field_DataGridView.Rows[x].Cells[y].Value = c[2].ElementAt(0);
-                Program.FormGame.Field_DataGridView.Rows[x].Cells[y].Style.BackColor = System.Drawing.Color.Khaki;
+                //Program.FormGame.Field_DataGridView.Rows[x].Cells[y].Value = c[2].ElementAt(0);
+                //Program.FormGame.Field_DataGridView.Rows[x].Cells[y].Style.BackColor = System.Drawing.Color.Khaki;
             }
         }
 
@@ -136,6 +136,21 @@ namespace UPS_Scrabble_client
 
                 Program.FormGame.Field_DataGridView.Rows[x].Cells[y].Value = c[2].ElementAt(0);
                 Program.FormGame.Field_DataGridView.Rows[x].Cells[y].Style.BackColor = System.Drawing.Color.Khaki;
+            }
+        }
+
+        public void Reconnect()
+        {
+            for(int i = 0; i < 15; i++)
+            {
+                for(int j = 0; j < 15; j++)
+                {
+                    if(field[i][j] != '\0')
+                    {
+                        Program.FormGame.Field_DataGridView.Rows[i].Cells[j].Value = field[i][j];
+                        Program.FormGame.Field_DataGridView.Rows[i].Cells[j].Style.BackColor = System.Drawing.Color.Khaki;
+                    }
+                }
             }
         }
 

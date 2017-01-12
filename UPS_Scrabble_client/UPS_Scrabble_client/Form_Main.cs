@@ -65,7 +65,19 @@ namespace UPS_Scrabble_client
         {
             if (!connected) return;
             this.Hide();
-            Program.FormGame.Show();
+
+            try
+            {
+                Program.FormGame.Show();
+            }
+            catch (Exception ex)
+            {
+                Program.FormGame = new Form_Game(Program.Game);
+                Program.FormGame.UpdateScore();
+                Program.Game.Random();
+                Program.Game.Reconnect();
+                Program.FormGame.Show();
+            }
         }
 
         private void Form_Main_FormClosed(object sender, FormClosedEventArgs e)

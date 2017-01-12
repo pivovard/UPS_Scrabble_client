@@ -186,7 +186,6 @@ namespace UPS_Scrabble_client
 
         private void Form_Game_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Network.Send("END");
             //Disconnect
             Program.FormMain.Button_Connect_Click(Program.FormMain.Btn_Connect, new EventArgs());
 

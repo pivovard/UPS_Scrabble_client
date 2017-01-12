@@ -89,6 +89,7 @@ namespace UPS_Scrabble_client
 
         public static void Disconnect()
         {
+            Network.Send("END:");
             Socket.Close();
             Console.WriteLine("Disconnected.");
         }
@@ -174,7 +175,7 @@ namespace UPS_Scrabble_client
                     {
                         Send("RETURN");
                     }
-                    else
+                    else if(res == DialogResult.No)
                     {
                         Send("NEW");
                     }
@@ -183,7 +184,9 @@ namespace UPS_Scrabble_client
                 case "GAMER":
                     Program.Game = new Game(type[1], type[2], type[3], nick, n);
                     Program.FormGame = new Form_Game(Program.Game);
+                    Program.FormGame.UpdateScore();
                     Program.Game.Random();
+                    Program.Game.Reconnect();
 
                     if (Program.FormMain.Btn_Start.InvokeRequired)
                     {
