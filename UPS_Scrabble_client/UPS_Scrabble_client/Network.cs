@@ -89,7 +89,6 @@ namespace UPS_Scrabble_client
 
         public static void Disconnect()
         {
-            Network.Send("END:");
             Socket.Close();
             Console.WriteLine("Disconnected.");
         }
@@ -114,13 +113,12 @@ namespace UPS_Scrabble_client
                 if (size < 1)
                 {
                     MessageBox.Show("Server unavaible.");
-                    Program.FormMain.Button_Connect_Click(Program.FormMain.Btn_Connect, new EventArgs());
+                    Program.FormGame.Close();
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                return;
             }
         }
 
@@ -165,7 +163,7 @@ namespace UPS_Scrabble_client
                 case "NICK":
                     MessageBox.Show("Nick allready in use.");
                     //Disconnect
-                    Program.FormMain.Button_Connect_Click(Program.FormMain.Btn_Connect, new EventArgs());
+                    Program.FormMain.Connect_Disconnect();
                     Disconnect();
                     break;
 
