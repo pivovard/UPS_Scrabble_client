@@ -46,15 +46,27 @@ namespace UPS_Scrabble_client
 
         public void UpdateScore()
         {
-            L_Score1.Text = Game.Players[0].score.ToString();
-            L_Score2.Text = Game.Players[1].score.ToString();
+            SetText(L_Score1, Game.Players[0].score.ToString());
+            SetText(L_Score2, Game.Players[1].score.ToString());
 
-            if(Game.N == 3){
-                L_Score3.Text = Game.Players[2].score.ToString();
+            if (Game.N == 3){
+                SetText(L_Score3, Game.Players[2].score.ToString());
             }
             if (Game.N == 4)
             {
-                L_Score4.Text = Game.Players[3].score.ToString();
+                SetText(L_Score4, Game.Players[3].score.ToString());
+            }
+        }
+
+        private void SetText(Label label, string value)
+        {
+            if (label.InvokeRequired)
+            {
+                label.Invoke(new Action(delegate () { label.Text = value; }));
+            }
+            else
+            {
+                label.Text = value;
             }
         }
 
@@ -70,6 +82,9 @@ namespace UPS_Scrabble_client
             if (x !=  0 && Game.field[x - 1][y] != '\0') res = true;
             if (y != 14 && Game.field[x][y + 1] != '\0') res = true;
             if (y !=  0 && Game.field[x][y - 1] != '\0') res = true;
+
+            //test, jestli je uz pole obsazeno
+            if (Game.field[x][y] != '\0') res = false;
 
             return res;
         }
@@ -94,6 +109,8 @@ namespace UPS_Scrabble_client
 
             Game.stack[c] = '\0';
             Stack_DataGridView.Rows[0].Cells[c].Value = "";
+
+            Field_DataGridView.ClearSelection();
         }
 
         private void Btn_Turn_Click(object sender, EventArgs e)
@@ -180,6 +197,7 @@ namespace UPS_Scrabble_client
             DialogResult res = MessageBox.Show("Leave game?", "Exit", MessageBoxButtons.OKCancel);
             if (res == DialogResult.OK)
             {
+                Network.Send("END:");
                 this.Close();
             }
         }
@@ -187,9 +205,8 @@ namespace UPS_Scrabble_client
         private void Form_Game_FormClosed(object sender, FormClosedEventArgs e)
         {
             //Disconnect
-            Program.FormMain.Button_Connect_Click(Program.FormMain.Btn_Connect, new EventArgs());
-
-            this.Hide();
+            Program.FormMain.Connect_Disconnect();
+            
             Program.FormMain.Show();
         }
 
