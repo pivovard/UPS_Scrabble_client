@@ -12,6 +12,7 @@ namespace UPS_Scrabble_client
 {
     public partial class Form_Main : Form
     {
+        private object _lock = new object();
         public bool connected = false;
 
         public Form_Main()
@@ -19,46 +20,56 @@ namespace UPS_Scrabble_client
             InitializeComponent();
         }
 
-        public void Button_Connect_Click(object sender, EventArgs e)
+        public void Connect_Disconnect()
         {
-            //lock on connected
-            if (!connected)
+            lock (_lock)
             {
-                int n;
-                if (radioButton1.Checked) {
-                    n = 2;
-                }
-                else if (radioButton2.Checked) {
-                    n = 3;
-                }
-                else {
-                    n = 4;
-                }
-
-                connected = Network.Connect(Tb_IP.Text, Tb_Port.Text, Tb_Nick.Text, n);
-                if(connected)
-                    if (Btn_Connect.InvokeRequired)
+                if (!connected)
+                {
+                    int n;
+                    if (radioButton1.Checked)
                     {
-                        Btn_Connect.Invoke(new Action(delegate () { Btn_Connect.Text = "Disconnect"; }));
+                        n = 2;
+                    }
+                    else if (radioButton2.Checked)
+                    {
+                        n = 3;
                     }
                     else
                     {
-                        Btn_Connect.Text = "Disconnect";
+                        n = 4;
                     }
-            }
-            else
-            {
-                Network.Disconnect();
-                connected = false;
-                if (Btn_Connect.InvokeRequired)
-                {
-                    Btn_Connect.Invoke(new Action(delegate () { Btn_Connect.Text = "Connect"; }));
+
+                    connected = Network.Connect(Tb_IP.Text, Tb_Port.Text, Tb_Nick.Text, n);
+                    if (connected)
+                        if (Btn_Connect.InvokeRequired)
+                        {
+                            Btn_Connect.Invoke(new Action(delegate () { Btn_Connect.Text = "Disconnect"; }));
+                        }
+                        else
+                        {
+                            Btn_Connect.Text = "Disconnect";
+                        }
                 }
                 else
                 {
-                    Btn_Connect.Text = "Connect";
-                }
+                    Network.Disconnect();
+                    connected = false;
+                    if (Btn_Connect.InvokeRequired)
+                    {
+                        Btn_Connect.Invoke(new Action(delegate () { Btn_Connect.Text = "Connect"; }));
+                    }
+                    else
+                    {
+                        Btn_Connect.Text = "Connect";
+                    }
+                } 
             }
+        }
+
+        public void Button_Connect_Click(object sender, EventArgs e)
+        {
+            this.Connect_Disconnect();
         }
 
         private void Btn_Start_Click(object sender, EventArgs e)
