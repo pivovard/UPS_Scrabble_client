@@ -206,7 +206,16 @@ namespace UPS_Scrabble_client
         {
             //Disconnect
             Program.FormMain.Connect_Disconnect();
-            
+
+            if (Program.FormMain.Btn_Start.InvokeRequired)
+            {
+                Program.FormMain.Btn_Start.Invoke(new Action(delegate () { Program.FormMain.Btn_Start.Enabled = true; }));
+            }
+            else
+            {
+                Program.FormMain.Btn_Start.Enabled = true;
+            }
+
             Program.FormMain.Show();
         }
 
