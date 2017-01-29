@@ -44,11 +44,19 @@ namespace UPS_Scrabble_client
                     if (connected)
                         if (Btn_Connect.InvokeRequired)
                         {
-                            Btn_Connect.Invoke(new Action(delegate () { Btn_Connect.Text = "Disconnect"; }));
+                            Btn_Connect.Invoke(new Action(delegate () {
+                                Btn_Connect.Text = "Disconnect";
+                                radioButton1.Enabled = false;
+                                radioButton2.Enabled = false;
+                                radioButton3.Enabled = false;
+                            }));
                         }
                         else
                         {
                             Btn_Connect.Text = "Disconnect";
+                            radioButton1.Enabled = false;
+                            radioButton2.Enabled = false;
+                            radioButton3.Enabled = false;
                         }
                 }
                 else
@@ -57,11 +65,19 @@ namespace UPS_Scrabble_client
                     connected = false;
                     if (Btn_Connect.InvokeRequired)
                     {
-                        Btn_Connect.Invoke(new Action(delegate () { Btn_Connect.Text = "Connect"; }));
+                        Btn_Connect.Invoke(new Action(delegate () {
+                            Btn_Connect.Text = "Connect";
+                            radioButton1.Enabled = true;
+                            radioButton2.Enabled = true;
+                            radioButton3.Enabled = true;
+                        }));
                     }
                     else
                     {
                         Btn_Connect.Text = "Connect";
+                        radioButton1.Enabled = true;
+                        radioButton2.Enabled = true;
+                        radioButton3.Enabled = true;
                     }
                 } 
             }
