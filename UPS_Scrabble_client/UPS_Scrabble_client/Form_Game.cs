@@ -70,22 +70,41 @@ namespace UPS_Scrabble_client
             }
         }
 
+        public void UpdateTurns()
+        {
+            for (int i = 0; i < 15; i++)
+            {
+                for (int j = 0; j < 15; j++)
+                {
+                    if (Game.field[i][j] != '\0')
+                    {
+                        Program.FormGame.Field_DataGridView.Rows[i].Cells[j].Value = Game.field[i][j];
+                        Program.FormGame.Field_DataGridView.Rows[i].Cells[j].Style.BackColor = System.Drawing.Color.Khaki;
+                    }
+                }
+            }
+        }
+
         private bool IsMove(int x, int y)
         {
             bool res = false;
 
             //test, jestli je prvni kamen na stredovem poli
-            if (Game.field[7][7] != '\0' || (x == 7 && y == 7)) res = true;
+            if (Game.field[7][7] == '\0')
+            {
+                if (x == 7 && y == 7) return true;
+                else return false;
+            }
+
+            //test, jestli je uz pole obsazeno
+            if (Game.field[x][y] != '\0') return false;
 
             //test, jestli se kamen dotyka jineho
             if (x != 14 && Game.field[x + 1][y] != '\0') res = true;
             if (x !=  0 && Game.field[x - 1][y] != '\0') res = true;
             if (y != 14 && Game.field[x][y + 1] != '\0') res = true;
             if (y !=  0 && Game.field[x][y - 1] != '\0') res = true;
-
-            //test, jestli je uz pole obsazeno
-            if (Game.field[x][y] != '\0') res = false;
-
+            
             return res;
         }
 
@@ -204,9 +223,11 @@ namespace UPS_Scrabble_client
 
         private void Form_Game_FormClosed(object sender, FormClosedEventArgs e)
         {
+            this.Dispose();
+            Program.Game = null;
+
             //Disconnect
             Program.FormMain.Connect_Disconnect();
-
             Program.FormMain.Show();
         }
 

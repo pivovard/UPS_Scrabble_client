@@ -111,8 +111,9 @@ namespace UPS_Scrabble_client
             {
                 Program.FormGame = new Form_Game(Program.Game);
                 Program.FormGame.UpdateScore();
+                Program.FormGame.UpdateTurns();
                 Program.Game.Random();
-                Program.Game.Reconnect();
+                //Program.Game.Reconnect();
                 Program.FormGame.Show();
             }
         }

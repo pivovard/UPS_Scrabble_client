@@ -78,7 +78,7 @@ namespace UPS_Scrabble_client
                 return false;
             }
             
-            buffer = Encoding.ASCII.GetBytes(nick + ";" + n.ToString() + "\n");
+            buffer = Encoding.ASCII.GetBytes("NICK:" + nick + ";" + n.ToString() + "\n");
             Socket.Send(buffer);
 
             Listenner = new Thread(Listen);
@@ -145,9 +145,9 @@ namespace UPS_Scrabble_client
                     break;
 
                 case "TURN":
-                    if (Program.FormMain.Btn_Start.InvokeRequired)
+                    if (Program.FormGame.Btn_Turn.InvokeRequired)
                     {
-                        Program.FormMain.Btn_Start.Invoke(new Action(() => { Program.FormGame.Btn_Turn.Enabled = true; Program.FormGame.turn = true; }));
+                        Program.FormGame.Btn_Turn.Invoke(new Action(() => { Program.FormGame.Btn_Turn.Enabled = true; Program.FormGame.turn = true; }));
                     }
                     else
                     {
@@ -180,11 +180,15 @@ namespace UPS_Scrabble_client
                     break;
 
                 case "GAMER":
-                    Program.Game = new Game(type[1], type[2], type[3], nick, n);
+                    Console.WriteLine("Reconnected.");
+                    if(type.Count() == 4) Program.Game = new Game(type[1], type[2], type[3], nick, n);
+                    else Program.Game = new Game(type[1], type[2], nick, n);
+
                     Program.FormGame = new Form_Game(Program.Game);
                     Program.FormGame.UpdateScore();
+                    Program.FormGame.UpdateTurns();
                     Program.Game.Random();
-                    Program.Game.Reconnect();
+                    //Program.Game.Reconnect();
 
                     if (Program.FormMain.Btn_Start.InvokeRequired)
                     {
