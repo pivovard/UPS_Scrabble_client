@@ -124,7 +124,8 @@ namespace UPS_Scrabble_client
             Game.field[e.RowIndex][e.ColumnIndex] = Game.stack[c];
 
             Game.turn += ";" + e.RowIndex + "," + e.ColumnIndex + "," + Game.stack[c];
-            Game.Player.score++;
+            Game.Player.score += Game.Points(Game.stack[c]);
+            UpdateScore();
 
             Game.stack[c] = '\0';
             Stack_DataGridView.Rows[0].Cells[c].Value = "";
@@ -169,7 +170,8 @@ namespace UPS_Scrabble_client
                 }
             }
 
-            Game.Player.score--;
+            Game.Player.score -= Game.Points(c[2].First());
+            UpdateScore();
 
             Game.turn = Game.turn.Substring(0, Game.turn.Length - last.Length - 1);
         }
@@ -202,7 +204,8 @@ namespace UPS_Scrabble_client
                     }
                 }
 
-                Game.Player.score--;
+                Game.Player.score -= Game.Points(c[2].First());
+                UpdateScore();
             }
             
             Game.turn = "";

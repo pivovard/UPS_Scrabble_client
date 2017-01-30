@@ -19,6 +19,9 @@ namespace UPS_Scrabble_client
 
         public string turn = "";
 
+        private string vocals = "AEIOUY";
+        private int[] multiplier = { 1, 3, 3, 2, 1, 3, 3, 3, 1, 2, 2, 2, 2, 2, 1, 3, 10, 2, 2, 3, 1, 3, 10, 10, 1, 3 };
+
 
         public Game(string id, string pl, string nick, int n)
         {
@@ -103,11 +106,18 @@ namespace UPS_Scrabble_client
             Random r = new Random();
             for (int i = 0; i < 7; i++)
             {
-                stack[i] = (char)(65 + r.Next(26));
+                if (r.Next() % 3 == 0) stack[i] = (char)(65 + r.Next(26));
+                else stack[i] = vocals.ElementAt(r.Next(6));
             }
 
             Program.FormGame.Stack_DataGridView.Rows.Clear();
             Program.FormGame.Stack_DataGridView.Rows.Add(stack[0], stack[1], stack[2], stack[3], stack[4], stack[5], stack[6]);
+        }
+
+        public int Points(char c)
+        {
+            int i = c - 65;
+            return multiplier[i];
         }
 
         public void RecvTurn(string player, string turn)
