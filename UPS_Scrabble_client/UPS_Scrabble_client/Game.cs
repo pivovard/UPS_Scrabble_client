@@ -87,7 +87,7 @@ namespace UPS_Scrabble_client
             string[] c;
             string[] t = turn.Split(';');
             //jednotlive tahy: x,y,char
-            for (int i = 1; i < t.Count(); i++)
+            for (int i = 0; i < t.Count(); i++)
             {
                 c = t[i].Split(',');
 
