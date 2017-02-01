@@ -106,7 +106,7 @@ namespace UPS_Scrabble_client
             Random r = new Random();
             for (int i = 0; i < 7; i++)
             {
-                if (r.Next() % 3 == 0) stack[i] = (char)(65 + r.Next(26));
+                if (r.Next() % 2 == 0) stack[i] = (char)(65 + r.Next(26));
                 else stack[i] = vocals.ElementAt(r.Next(6));
             }
 
