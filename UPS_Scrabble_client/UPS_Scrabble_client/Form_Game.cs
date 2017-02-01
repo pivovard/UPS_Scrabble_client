@@ -216,7 +216,7 @@ namespace UPS_Scrabble_client
             Field_DataGridView.Rows[x].Cells[y].Style.BackColor = Color.White;
 
             //add char back to stack on free position
-            for(int i = 0; i < 7; i++)
+            for(int i = 0; i < 10; i++)
             {
                 if(Game.stack[i] == '\0')
                 {
@@ -260,7 +260,7 @@ namespace UPS_Scrabble_client
                 Field_DataGridView.Rows[x].Cells[y].Style.BackColor = Color.White;
 
                 //add char back to stack on free position
-                for (int i = 0; i < 7; i++)
+                for (int i = 0; i < 10; i++)
                 {
                     if (Game.stack[i] == '\0')
                     {

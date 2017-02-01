@@ -50,7 +50,7 @@ namespace UPS_Scrabble_client
             Player = Players.Where(p => p.nick == nick).First(); ;
 
             field = new char[15][];
-            stack = new char[7];
+            stack = new char[10];
 
             for (int i = 0; i < 15; i++)
             {
@@ -88,7 +88,7 @@ namespace UPS_Scrabble_client
             Player = Players.Where(p => p.nick == nick).First(); ;
 
             field = new char[15][];
-            stack = new char[7];
+            stack = new char[10];
 
             for (int i = 0; i < 15; i++)
             {
@@ -124,14 +124,14 @@ namespace UPS_Scrabble_client
         public void Random()
         {
             Random r = new Random();
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 10; i++)
             {
                 if (r.Next() % 2 == 0) stack[i] = (char)(65 + r.Next(26));
                 else stack[i] = vocals.ElementAt(r.Next(6));
             }
 
             Program.FormGame.Stack_DataGridView.Rows.Clear();
-            Program.FormGame.Stack_DataGridView.Rows.Add(stack[0], stack[1], stack[2], stack[3], stack[4], stack[5], stack[6]);
+            Program.FormGame.Stack_DataGridView.Rows.Add(stack[0], stack[1], stack[2], stack[3], stack[4], stack[5], stack[6], stack[7], stack[8], stack[9]);
         }
 
         public int Points(char c)
