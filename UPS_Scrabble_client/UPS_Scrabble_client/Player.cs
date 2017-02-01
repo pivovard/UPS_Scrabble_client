@@ -13,6 +13,10 @@ namespace UPS_Scrabble_client
 
         public int score = 0;
 
+        /// <summary>
+        /// Create new player
+        /// </summary>
+        /// <param name="pl"></param>
         public Player(string pl)
         {
             string[] split = pl.Split(',');
@@ -21,6 +25,11 @@ namespace UPS_Scrabble_client
             nick = split[1];
         }
 
+        /// <summary>
+        /// Recreate existing player including score
+        /// </summary>
+        /// <param name="pl"></param>
+        /// <param name="r"></param>
         public Player(string pl, bool r)
         {
             string[] split = pl.Split(',');

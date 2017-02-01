@@ -12,12 +12,21 @@ namespace UPS_Scrabble_client
 {
     public partial class Form_Game : Form
     {
+        /// <summary>
+        /// Instance of Game (same as Program.Game)
+        /// </summary>
         Game Game { get; set; }
 
+        //Selected char in stack
         int c = 0;
+        //Player on turn
         public bool turn = false;
 
 
+        /// <summary>
+        /// Create and init new Game Form
+        /// </summary>
+        /// <param name="g"></param>
         public Form_Game(Game g)
         {
             InitializeComponent();
@@ -41,9 +50,13 @@ namespace UPS_Scrabble_client
                 Field_DataGridView.Rows.Add();
             }
 
+            //middle field
             Field_DataGridView.Rows[7].Cells[7].Style.BackColor = Color.Khaki;
         }
 
+        /// <summary>
+        /// Update score of all players
+        /// </summary>
         public void UpdateScore()
         {
             SetText(L_Score1, Game.Players[0].score.ToString());
@@ -58,6 +71,11 @@ namespace UPS_Scrabble_client
             }
         }
 
+        /// <summary>
+        /// Set text to the label (cross-thread)
+        /// </summary>
+        /// <param name="label"></param>
+        /// <param name="value"></param>
         private void SetText(Label label, string value)
         {
             if (label.InvokeRequired)
@@ -70,6 +88,9 @@ namespace UPS_Scrabble_client
             }
         }
 
+        /// <summary>
+        /// Actualize Game Form
+        /// </summary>
         public void UpdateTurns()
         {
             for (int i = 0; i < 15; i++)
@@ -85,6 +106,12 @@ namespace UPS_Scrabble_client
             }
         }
 
+        /// <summary>
+        /// Test if the place of char is valid
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
         private bool IsMove(int x, int y)
         {
             bool res = false;
@@ -108,58 +135,87 @@ namespace UPS_Scrabble_client
             return res;
         }
 
-
+        /// <summary>
+        /// Selects char from the stack
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Stack_DataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             c = e.ColumnIndex;
         }
 
+        /// <summary>
+        /// Place char to the gameplan
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Field_DataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            //test
             if (Game.stack[c] == '\0' || turn == false) return;
             if (!IsMove(e.RowIndex, e.ColumnIndex)) return;
 
+            //set char
             Field_DataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.BackColor = Color.Khaki;
             Field_DataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = Game.stack[c];
             Game.field[e.RowIndex][e.ColumnIndex] = Game.stack[c];
 
+            //add move to turn
             Game.turn += ";" + e.RowIndex + "," + e.ColumnIndex + "," + Game.stack[c];
+
+            //update score
             Game.Player.score += Game.Points(Game.stack[c]);
             UpdateScore();
 
+            //update stack
             Game.stack[c] = '\0';
             Stack_DataGridView.Rows[0].Cells[c].Value = "";
 
             Field_DataGridView.ClearSelection();
         }
 
+        /// <summary>
+        /// Send turn to the server
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Btn_Turn_Click(object sender, EventArgs e)
         {
+            UpdateScore();
             Btn_Turn.Enabled = false;
             turn = false;
-
-            UpdateScore();
             
+            //send
             Network.Send("TURN:" + Game.ID + ':' + Game.Player.score + Game.turn);
             
+            //new stack
             Game.Random();
             Game.turn = "";
         }
 
+        /// <summary>
+        /// Return last placed char
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Btn_Back_Click(object sender, EventArgs e)
         {
             if (Game.turn == "") return;
 
+            //get last move
             string last = Game.turn.Split(';').Last();
 
             string[] c = last.Split(',');
             int x = int.Parse(c[0]);
             int y = int.Parse(c[1]);
 
+            //sub char from field
             Game.field[x][y] = '\0';
             Field_DataGridView.Rows[x].Cells[y].Value = "";
             Field_DataGridView.Rows[x].Cells[y].Style.BackColor = Color.White;
 
+            //add char back to stack on free position
             for(int i = 0; i < 7; i++)
             {
                 if(Game.stack[i] == '\0')
@@ -170,30 +226,40 @@ namespace UPS_Scrabble_client
                 }
             }
 
+            //sub score
             Game.Player.score -= Game.Points(c[2].First());
             UpdateScore();
 
+            //sub move from turn
             Game.turn = Game.turn.Substring(0, Game.turn.Length - last.Length - 1);
         }
 
+        /// <summary>
+        /// Return all placed chars of current turn
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Btn_Reset_Click(object sender, EventArgs e)
         {
             if (Game.turn == "") return;
 
             string[] turn = Game.turn.Split(';');
 
+            //all moves
             foreach(var t in turn)
             {
-                if (t == "") continue;  //turn[0] je "" -> score
+                if (t == "") continue;  //turn[0] is "" -> score
 
                 string[] c = t.Split(',');
                 int x = int.Parse(c[0]);
                 int y = int.Parse(c[1]);
 
+                //sub char from field
                 Game.field[x][y] = '\0';
                 Field_DataGridView.Rows[x].Cells[y].Value = "";
                 Field_DataGridView.Rows[x].Cells[y].Style.BackColor = Color.White;
 
+                //add char back to stack on free position
                 for (int i = 0; i < 7; i++)
                 {
                     if (Game.stack[i] == '\0')
@@ -204,16 +270,20 @@ namespace UPS_Scrabble_client
                     }
                 }
 
+                //sub score
                 Game.Player.score -= Game.Points(c[2].First());
                 UpdateScore();
             }
             
+            //clear turn
             Game.turn = "";
         }
 
-
-
-
+        /// <summary>
+        /// Close Game Form -> Disconnect from the server
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Btn_End_Click(object sender, EventArgs e)
         {
             DialogResult res = MessageBox.Show("Leave game?", "Exit", MessageBoxButtons.OKCancel);
@@ -224,6 +294,11 @@ namespace UPS_Scrabble_client
             }
         }
 
+        /// <summary>
+        /// Disconnect from the server on close.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Form_Game_FormClosed(object sender, FormClosedEventArgs e)
         {
             this.Dispose();

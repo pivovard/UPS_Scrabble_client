@@ -11,7 +11,9 @@ namespace UPS_Scrabble_client
         public int ID;
         public int N;
 
+        //List of players
         public Player[] Players;
+        //This player
         public Player Player;
 
         public char[][] field;
@@ -23,6 +25,13 @@ namespace UPS_Scrabble_client
         private int[] multiplier = { 1, 3, 3, 2, 1, 3, 3, 3, 1, 2, 2, 2, 2, 2, 1, 3, 10, 2, 2, 3, 1, 3, 10, 10, 1, 3 };
 
 
+        /// <summary>
+        /// Create new game.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="pl"></param>
+        /// <param name="nick"></param>
+        /// <param name="n"></param>
         public Game(string id, string pl, string nick, int n)
         {
             ID = int.Parse(id);
@@ -53,6 +62,14 @@ namespace UPS_Scrabble_client
             }
         }
 
+        /// <summary>
+        /// Recreate existing game.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="pl"></param>
+        /// <param name="turn"></param>
+        /// <param name="nick"></param>
+        /// <param name="n"></param>
         public Game(string id, string pl, string turn, string nick, int n)
         {
             ID = int.Parse(id);
@@ -101,6 +118,9 @@ namespace UPS_Scrabble_client
             }
         }
 
+        /// <summary>
+        /// Generate new chars to the stack
+        /// </summary>
         public void Random()
         {
             Random r = new Random();
@@ -120,6 +140,11 @@ namespace UPS_Scrabble_client
             return multiplier[i];
         }
 
+        /// <summary>
+        /// Recv turn of other players from the server
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="turn"></param>
         public void RecvTurn(string player, string turn)
         {
             int id = int.Parse(player);
@@ -149,7 +174,10 @@ namespace UPS_Scrabble_client
             }
         }
 
-        public void Reconnect()
+        /// <summary>
+        /// Actualize Game Form (after reconnect)
+        /// </summary>
+        public void ActualizeGameFrom()
         {
             for(int i = 0; i < 15; i++)
             {

@@ -20,12 +20,17 @@ namespace UPS_Scrabble_client
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Connect/Disconnect to the server
+        /// Enable/Disable controls (cross-thread)
+        /// </summary>
         public void Connect_Disconnect()
         {
             lock (_lock)
             {
                 if (!connected)
                 {
+                    //# of players
                     int n;
                     if (radioButton1.Checked)
                     {
@@ -40,6 +45,7 @@ namespace UPS_Scrabble_client
                         n = 4;
                     }
 
+                    //connect to server
                     connected = Network.Connect(Tb_IP.Text, Tb_Port.Text, Tb_Nick.Text, n);
                     if (connected)
                         if (Btn_Connect.InvokeRequired)
@@ -61,6 +67,7 @@ namespace UPS_Scrabble_client
                 }
                 else
                 {
+                    //disconnect from server
                     Network.Disconnect();
                     connected = false;
 
@@ -93,20 +100,32 @@ namespace UPS_Scrabble_client
             }
         }
 
-        public void Button_Connect_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Call Connect_Disconnect();
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Connect_Click(object sender, EventArgs e)
         {
             this.Connect_Disconnect();
         }
 
+        /// <summary>
+        /// Show Game Form.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Btn_Start_Click(object sender, EventArgs e)
         {
             if (!connected) return;
             this.Hide();
 
+            //GameForm must be created first
             try
             {
                 Program.FormGame.Show();
             }
+            //Create new GameForm
             catch (Exception ex)
             {
                 Program.FormGame = new Form_Game(Program.Game);
@@ -118,6 +137,12 @@ namespace UPS_Scrabble_client
             }
         }
 
+        /// <summary>
+        /// On close of app.
+        /// Disconnect from the server if connected.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Form_Main_FormClosed(object sender, FormClosedEventArgs e)
         {
             if (connected) Network.Disconnect();
