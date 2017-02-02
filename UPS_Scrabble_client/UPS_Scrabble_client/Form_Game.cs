@@ -17,6 +17,8 @@ namespace UPS_Scrabble_client
         /// </summary>
         Game Game { get; set; }
 
+        BackgroundWorker Worker { get; set; }
+
         /// <summary>
         /// Timer (1sec):
         /// Regular time - 1 min
@@ -41,11 +43,6 @@ namespace UPS_Scrabble_client
             InitializeComponent();
 
             Game = g;
-
-            //set timers
-            Timer = new Timer();
-            Timer.Interval = 100; //1sec
-            Timer.Tick += new EventHandler(Tick);
 
             //set players
             L_Player1.Text = Game.Players[0].nick;
@@ -84,6 +81,20 @@ namespace UPS_Scrabble_client
             Field_DataGridView.Rows[0].Cells[14].Style.BackColor = Color.Red;
             Field_DataGridView.Rows[14].Cells[0].Style.BackColor = Color.Red;
             Field_DataGridView.Rows[14].Cells[14].Style.BackColor = Color.Red;
+
+            //set timers
+            /*Timer = new Timer();
+            Timer.Interval = 100; //1sec
+            Timer.Tick += new EventHandler(Tick);*/
+
+            //set worker
+            /*Worker = new BackgroundWorker();
+            Worker.WorkerReportsProgress = true;
+            Worker.WorkerSupportsCancellation = true;
+
+            Worker.DoWork += new DoWorkEventHandler(DoWork);
+            Worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(RunWorkerCompleted);
+            Worker.ProgressChanged += new ProgressChangedEventHandler(ProgressChanged);*/
         }
 
         /// <summary>
@@ -93,14 +104,17 @@ namespace UPS_Scrabble_client
         {
             if (Btn_Turn.InvokeRequired)
             {
-                Btn_Turn.Invoke(new Action(() => { Btn_Turn.Enabled = true; turn = true; Timer.Start(); }));
+                Btn_Turn.Invoke(new Action(() => { Btn_Turn.Enabled = true; turn = true; }));
             }
             else
             {
                 Btn_Turn.Enabled = true;
                 turn = true;
-                Timer.Start();
             }
+
+            /*Timer.Start();
+            progressBar.Visible = true;
+            Worker.RunWorkerAsync();*/
         }
 
         /// <summary>
@@ -108,11 +122,6 @@ namespace UPS_Scrabble_client
         /// </summary>
         private void SendTurn()
         {
-            //Stop timer
-            Timer.Stop();
-            time = 0;
-            progressBar.Visible = false;
-
             UpdateScore();
             Btn_Turn.Enabled = false;
             turn = false;
@@ -123,33 +132,13 @@ namespace UPS_Scrabble_client
             //new stack
             Game.Random();
             Game.turn = "";
-        }
 
-        /// <summary>
-        /// Tick of timer.
-        /// Regular time - 1 min -> start bonus time
-        /// Bonus time - 30 sec -> end turn
-        /// </summary>
-        /// <param name="o"></param>
-        /// <param name="e"></param>
-        private void Tick(object o, EventArgs e)
-        {
-            time++;
-            Console.WriteLine(time);
-
-            //regular end
-            if (time == 60)
-            {
-                progressBar.Value = 0;
-                progressBar.Visible = true;
-            }
-            //perform step on progressbar
-            if (time > 60) progressBar.PerformStep();
-            //bonus end
-            if (time == 90)
-            {
-                SendTurn();
-            }
+            //Stop timer
+            /*Timer.Stop();
+            time = 0;
+            progressBar.Visible = false;
+            progressBar.Value = 0;
+            Worker.CancelAsync();*/
         }
 
         /// <summary>
@@ -397,6 +386,84 @@ namespace UPS_Scrabble_client
             //Disconnect
             Program.FormMain.Connect_Disconnect();
             Program.FormMain.Show();
+        }
+
+        /// <summary>
+        /// Tick of timer.
+        /// Regular time - 1 min -> start bonus time
+        /// Bonus time - 30 sec -> end turn
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="e"></param>
+        private void Tick(object o, EventArgs e)
+        {
+            time++;
+
+            //regular end
+            if (time == 60)
+            {
+                progressBar.Value = 0;
+                progressBar.Visible = true;
+            }
+            //perform step on progressbar
+            if (time > 60) progressBar.PerformStep();
+            //bonus end
+            if (time == 90)
+            {
+                SendTurn();
+                MessageBox.Show("Time expired!");
+            }
+        }
+
+        private void DoWork(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker worker = sender as BackgroundWorker;
+
+            for (int i = 1; i <= 30; i++)
+            {
+                if (worker.CancellationPending == true)
+                {
+                    e.Cancel = true;
+                    break;
+                }
+                else
+                {
+                    // Perform a time consuming operation and report progress.
+                    System.Threading.Thread.Sleep(1000);
+                    worker.ReportProgress(i);
+                }
+            }
+        }
+
+        private void RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (e.Cancelled == true)
+            {
+                Console.WriteLine("Canceled!");
+            }
+            else if (e.Error != null)
+            {
+                Console.WriteLine(e.Error.Message);
+            }
+            else
+            {
+                MessageBox.Show("Time expired!");
+                SendTurn();
+            }
+        }
+
+        private void ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            //progressBar.Value = e.ProgressPercentage;
+            //progressBar.PerformStep();
+            if (progressBar.InvokeRequired)
+            {
+                progressBar.Invoke(new Action(delegate () { progressBar.PerformStep(); }));
+            }
+            else
+            {
+                progressBar.PerformStep();
+            }
         }
     }
 }
