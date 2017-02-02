@@ -17,6 +17,15 @@ namespace UPS_Scrabble_client
         /// </summary>
         Game Game { get; set; }
 
+        /// <summary>
+        /// Timer (1sec):
+        /// Regular time - 1 min
+        /// Bonus time - 30 sec
+        /// </summary>
+        private Timer Timer { get; set; }
+
+        private int time = 0;
+
         //Selected char in stack
         int c = 0;
         //Player on turn
@@ -33,6 +42,12 @@ namespace UPS_Scrabble_client
 
             Game = g;
 
+            //set timers
+            Timer = new Timer();
+            Timer.Interval = 100; //1sec
+            Timer.Tick += new EventHandler(Tick);
+
+            //set players
             L_Player1.Text = Game.Players[0].nick;
             L_Player2.Text = Game.Players[1].nick;
 
@@ -69,6 +84,72 @@ namespace UPS_Scrabble_client
             Field_DataGridView.Rows[0].Cells[14].Style.BackColor = Color.Red;
             Field_DataGridView.Rows[14].Cells[0].Style.BackColor = Color.Red;
             Field_DataGridView.Rows[14].Cells[14].Style.BackColor = Color.Red;
+        }
+
+        /// <summary>
+        /// Start players turn
+        /// </summary>
+        public void Turn()
+        {
+            if (Btn_Turn.InvokeRequired)
+            {
+                Btn_Turn.Invoke(new Action(() => { Btn_Turn.Enabled = true; turn = true; Timer.Start(); }));
+            }
+            else
+            {
+                Btn_Turn.Enabled = true;
+                turn = true;
+                Timer.Start();
+            }
+        }
+
+        /// <summary>
+        /// Send turn to the server
+        /// </summary>
+        private void SendTurn()
+        {
+            //Stop timer
+            Timer.Stop();
+            time = 0;
+            progressBar.Visible = false;
+
+            UpdateScore();
+            Btn_Turn.Enabled = false;
+            turn = false;
+
+            //send
+            Network.Send("TURN:" + Game.ID + ':' + Game.Player.score + Game.turn);
+
+            //new stack
+            Game.Random();
+            Game.turn = "";
+        }
+
+        /// <summary>
+        /// Tick of timer.
+        /// Regular time - 1 min -> start bonus time
+        /// Bonus time - 30 sec -> end turn
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="e"></param>
+        private void Tick(object o, EventArgs e)
+        {
+            time++;
+            Console.WriteLine(time);
+
+            //regular end
+            if (time == 60)
+            {
+                progressBar.Value = 0;
+                progressBar.Visible = true;
+            }
+            //perform step on progressbar
+            if (time > 60) progressBar.PerformStep();
+            //bonus end
+            if (time == 90)
+            {
+                SendTurn();
+            }
         }
 
         /// <summary>
@@ -193,22 +274,14 @@ namespace UPS_Scrabble_client
         }
 
         /// <summary>
+        /// Button:
         /// Send turn to the server
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Btn_Turn_Click(object sender, EventArgs e)
         {
-            UpdateScore();
-            Btn_Turn.Enabled = false;
-            turn = false;
-            
-            //send
-            Network.Send("TURN:" + Game.ID + ':' + Game.Player.score + Game.turn);
-            
-            //new stack
-            Game.Random();
-            Game.turn = "";
+            SendTurn();
         }
 
         /// <summary>
@@ -325,7 +398,5 @@ namespace UPS_Scrabble_client
             Program.FormMain.Connect_Disconnect();
             Program.FormMain.Show();
         }
-
-        
     }
 }

@@ -180,15 +180,7 @@ namespace UPS_Scrabble_client
 
                 //player on turn
                 case "TURN":
-                    if (Program.FormGame.Btn_Turn.InvokeRequired)
-                    {
-                        Program.FormGame.Btn_Turn.Invoke(new Action(() => { Program.FormGame.Btn_Turn.Enabled = true; Program.FormGame.turn = true; }));
-                    }
-                    else
-                    {
-                        Program.FormGame.Btn_Turn.Enabled = true;
-                        Program.FormGame.turn = true;
-                    }
+                    Program.FormGame.Turn();
                     break;
 
                 //turn of other player
