@@ -52,6 +52,23 @@ namespace UPS_Scrabble_client
 
             //middle field
             Field_DataGridView.Rows[7].Cells[7].Style.BackColor = Color.Khaki;
+
+            //bonus fields
+            // 2x
+            Field_DataGridView.Rows[4].Cells[4].Style.BackColor = Color.LightGreen;
+            Field_DataGridView.Rows[4].Cells[12].Style.BackColor = Color.LightGreen;
+            Field_DataGridView.Rows[12].Cells[4].Style.BackColor = Color.LightGreen;
+            Field_DataGridView.Rows[12].Cells[12].Style.BackColor = Color.LightGreen;
+            // 3x
+            Field_DataGridView.Rows[0].Cells[7].Style.BackColor = Color.Green;
+            Field_DataGridView.Rows[7].Cells[0].Style.BackColor = Color.Green;
+            Field_DataGridView.Rows[7].Cells[14].Style.BackColor = Color.Green;
+            Field_DataGridView.Rows[14].Cells[7].Style.BackColor = Color.Green;
+            // 4x
+            Field_DataGridView.Rows[0].Cells[0].Style.BackColor = Color.Red;
+            Field_DataGridView.Rows[0].Cells[14].Style.BackColor = Color.Red;
+            Field_DataGridView.Rows[14].Cells[0].Style.BackColor = Color.Red;
+            Field_DataGridView.Rows[14].Cells[14].Style.BackColor = Color.Red;
         }
 
         /// <summary>
@@ -165,7 +182,7 @@ namespace UPS_Scrabble_client
             Game.turn += ";" + e.RowIndex + "," + e.ColumnIndex + "," + Game.stack[c];
 
             //update score
-            Game.Player.score += Game.Points(Game.stack[c]);
+            Game.Player.score += Game.Points(Game.stack[c], e.RowIndex, e.ColumnIndex);
             UpdateScore();
 
             //update stack
@@ -227,7 +244,7 @@ namespace UPS_Scrabble_client
             }
 
             //sub score
-            Game.Player.score -= Game.Points(c[2].First());
+            Game.Player.score -= Game.Points(c[2].First(), x, y);
             UpdateScore();
 
             //sub move from turn
@@ -271,7 +288,7 @@ namespace UPS_Scrabble_client
                 }
 
                 //sub score
-                Game.Player.score -= Game.Points(c[2].First());
+                Game.Player.score -= Game.Points(c[2].First(), x, y);
                 UpdateScore();
             }
             

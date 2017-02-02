@@ -134,10 +134,27 @@ namespace UPS_Scrabble_client
             Program.FormGame.Stack_DataGridView.Rows.Add(stack[0], stack[1], stack[2], stack[3], stack[4], stack[5], stack[6], stack[7], stack[8], stack[9]);
         }
 
-        public int Points(char c)
+        /// <summary>
+        /// Multiple poins by char value and by position on field
+        /// </summary>
+        /// <param name="c"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public int Points(char c, int x, int y)
         {
             int i = c - 65;
-            return multiplier[i];
+            int s = multiplier[i];
+
+            // 4x
+            if ((x == 0 || x == 14) && (y == 0 || y == 14)) s *= 4;
+            // 3x
+            if ((x == 0 || x == 14) && (y == 7)) s *= 3;
+            if ((x == 7) && (y == 0 || y == 14)) s *= 3;
+            // 2x
+            if ((x == 4 || x == 12) && (y == 4 || y == 12)) s *= 2;
+
+            return s;
         }
 
         /// <summary>
