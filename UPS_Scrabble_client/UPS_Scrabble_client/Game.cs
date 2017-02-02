@@ -152,7 +152,7 @@ namespace UPS_Scrabble_client
             if ((x == 0 || x == 14) && (y == 7)) s *= 3;
             if ((x == 7) && (y == 0 || y == 14)) s *= 3;
             // 2x
-            if ((x == 4 || x == 12) && (y == 4 || y == 12)) s *= 2;
+            if ((x == 4 || x == 10) && (y == 4 || y == 10)) s *= 2;
 
             return s;
         }

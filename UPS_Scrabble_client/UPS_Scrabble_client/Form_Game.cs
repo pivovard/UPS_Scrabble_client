@@ -56,9 +56,9 @@ namespace UPS_Scrabble_client
             //bonus fields
             // 2x
             Field_DataGridView.Rows[4].Cells[4].Style.BackColor = Color.LightGreen;
-            Field_DataGridView.Rows[4].Cells[12].Style.BackColor = Color.LightGreen;
-            Field_DataGridView.Rows[12].Cells[4].Style.BackColor = Color.LightGreen;
-            Field_DataGridView.Rows[12].Cells[12].Style.BackColor = Color.LightGreen;
+            Field_DataGridView.Rows[4].Cells[10].Style.BackColor = Color.LightGreen;
+            Field_DataGridView.Rows[10].Cells[4].Style.BackColor = Color.LightGreen;
+            Field_DataGridView.Rows[10].Cells[10].Style.BackColor = Color.LightGreen;
             // 3x
             Field_DataGridView.Rows[0].Cells[7].Style.BackColor = Color.Green;
             Field_DataGridView.Rows[7].Cells[0].Style.BackColor = Color.Green;
