@@ -241,7 +241,10 @@ namespace UPS_Scrabble_client
                     MessageBox.Show("Player " + Program.Game.Players.Where(p => p.ID == int.Parse(type[1])).First().nick + " reconnected.");
                     break;
                     
+                //other balast
                 default:
+                    Program.FormMain.Connect_Disconnect();
+                    MessageBox.Show("Server doesn't react properly.");
                     break;
             }
         }

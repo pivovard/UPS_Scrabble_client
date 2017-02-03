@@ -388,6 +388,13 @@ namespace UPS_Scrabble_client
             Program.FormMain.Show();
         }
 
+
+
+
+
+
+
+
         /// <summary>
         /// Tick of timer.
         /// Regular time - 1 min -> start bonus time
