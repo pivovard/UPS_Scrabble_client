@@ -180,9 +180,9 @@
         public System.Windows.Forms.Button Btn_Connect;
         public System.Windows.Forms.Button Btn_Start;
         public System.Windows.Forms.TextBox Tb_Nick;
-        private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.RadioButton radioButton3;
+        public System.Windows.Forms.RadioButton radioButton1;
+        public System.Windows.Forms.RadioButton radioButton2;
+        public System.Windows.Forms.RadioButton radioButton3;
     }
 }
 

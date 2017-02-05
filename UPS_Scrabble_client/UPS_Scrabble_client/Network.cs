@@ -37,6 +37,11 @@ namespace UPS_Scrabble_client
         public static Thread Listenner { get; set; }
 
         /// <summary>
+        /// Thread that pings server
+        /// </summary>
+        private static Thread Pinger { get; set; }
+
+        /// <summary>
         /// Create socket and connect to server
         /// </summary>
         /// <param name="ip"></param>
@@ -105,6 +110,10 @@ namespace UPS_Scrabble_client
             Listenner = new Thread(Listen);
             Listenner.Start();
 
+            //start ping server
+            Pinger = new Thread(Ping);
+            Pinger.Start();
+
             return true;
         }
 
@@ -115,6 +124,39 @@ namespace UPS_Scrabble_client
         {
             Socket.Close();
             Console.WriteLine("Disconnected.");
+
+            try
+            {
+                Pinger.Abort();
+            }
+            catch { }
+
+            Program.FormMain.connected = false;
+            if (Program.FormMain.Btn_Connect.InvokeRequired)
+            {
+                Program.FormMain.Btn_Connect.Invoke(new Action(delegate () {
+                    Program.FormMain.Btn_Connect.Text = "Connect";
+                    Program.FormMain.radioButton1.Enabled = true;
+                    Program.FormMain.radioButton2.Enabled = true;
+                    Program.FormMain.radioButton3.Enabled = true;
+                }));
+            }
+            else
+            {
+                Program.FormMain.Btn_Connect.Text = "Connect";
+                Program.FormMain.radioButton1.Enabled = true;
+                Program.FormMain.radioButton2.Enabled = true;
+                Program.FormMain.radioButton3.Enabled = true;
+            }
+
+            if (Program.FormMain.Btn_Start.InvokeRequired)
+            {
+                Program.FormMain.Btn_Start.Invoke(new Action(delegate () { Program.FormMain.Btn_Start.Enabled = false; }));
+            }
+            else
+            {
+                Program.FormMain.Btn_Start.Enabled = false;
+            }
         }
 
         /// <summary>
@@ -141,8 +183,20 @@ namespace UPS_Scrabble_client
 
                 if (size < 1)
                 {
+                    if (Program.FormGame != null)
+                    {
+                        if (Program.FormGame.InvokeRequired)
+                        {
+                            Program.FormGame.Invoke(new Action(delegate () { Program.FormGame.Close(); }));
+                        }
+                        else
+                        {
+                            Program.FormGame.Close();
+                        }
+                    }
+                    else Disconnect();
+
                     MessageBox.Show("Server unavaible.");
-                    Program.FormGame.Close();
                 }
             }
             catch (Exception e)
@@ -192,7 +246,6 @@ namespace UPS_Scrabble_client
                 case "NICK":
                     MessageBox.Show("Nick allready in use.");
                     //Disconnect
-                    Program.FormMain.Connect_Disconnect();
                     Disconnect();
                     break;
 
@@ -240,10 +293,12 @@ namespace UPS_Scrabble_client
                 case "RECN":
                     MessageBox.Show("Player " + Program.Game.Players.Where(p => p.ID == int.Parse(type[1])).First().nick + " reconnected.");
                     break;
+
+                case "PING":
+                    break;
                     
-                //other balast
                 default:
-                    Program.FormMain.Connect_Disconnect();
+                    Disconnect();
                     MessageBox.Show("Server doesn't react properly.");
                     break;
             }
@@ -254,11 +309,48 @@ namespace UPS_Scrabble_client
         /// Add \n to the end of the message.
         /// </summary>
         /// <param name="msg"></param>
-        public static void Send(string msg)
+        public static bool Send(string msg)
         {
             Console.WriteLine("Send: " + msg);
             buffer = Encoding.ASCII.GetBytes(msg + "\n");
-            Socket.Send(buffer);
+
+            try
+            {
+                Socket.Send(buffer);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+            return true;
+        }
+
+        private static void Ping()
+        {
+            bool res;
+            while (true)
+            {
+                res = Send("PING");
+                if (res == false)
+                {
+                    MessageBox.Show("Server connection timeout.");
+                    if (Program.FormGame != null)
+                    {
+                        if (Program.FormGame.InvokeRequired)
+                        {
+                            Program.FormGame.Invoke(new Action(delegate () { Program.FormGame.Close(); }));
+                        }
+                        else
+                        {
+                            Program.FormGame.Close();
+                        }
+                    }
+                    else Disconnect();
+                    break;
+                }
+                Thread.Sleep(5000);
+            }
         }
     }
 }

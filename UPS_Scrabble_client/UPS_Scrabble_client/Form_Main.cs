@@ -69,33 +69,6 @@ namespace UPS_Scrabble_client
                 {
                     //disconnect from server
                     Network.Disconnect();
-                    connected = false;
-
-                    if (Btn_Connect.InvokeRequired)
-                    {
-                        Btn_Connect.Invoke(new Action(delegate () {
-                            Btn_Connect.Text = "Connect";
-                            radioButton1.Enabled = true;
-                            radioButton2.Enabled = true;
-                            radioButton3.Enabled = true;
-                        }));
-                    }
-                    else
-                    {
-                        Btn_Connect.Text = "Connect";
-                        radioButton1.Enabled = true;
-                        radioButton2.Enabled = true;
-                        radioButton3.Enabled = true;
-                    }
-
-                    if (Program.FormMain.Btn_Start.InvokeRequired)
-                    {
-                        Program.FormMain.Btn_Start.Invoke(new Action(delegate () { Program.FormMain.Btn_Start.Enabled = false; }));
-                    }
-                    else
-                    {
-                        Program.FormMain.Btn_Start.Enabled = false;
-                    }
                 } 
             }
         }

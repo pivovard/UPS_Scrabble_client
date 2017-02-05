@@ -384,7 +384,7 @@ namespace UPS_Scrabble_client
             Program.Game = null;
 
             //Disconnect
-            Program.FormMain.Connect_Disconnect();
+            Network.Disconnect();
             Program.FormMain.Show();
         }
 
