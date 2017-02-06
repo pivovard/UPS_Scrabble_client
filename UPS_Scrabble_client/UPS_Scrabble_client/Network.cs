@@ -118,7 +118,9 @@ namespace UPS_Scrabble_client
         }
 
         /// <summary>
-        /// Close connection
+        /// Close connection.
+        /// Abort ping thread.
+        /// Set MainForm.
         /// </summary>
         public static void Disconnect()
         {
@@ -326,6 +328,10 @@ namespace UPS_Scrabble_client
             return true;
         }
 
+        /// <summary>
+        /// Ping server.
+        /// If connection timedout, Disconnect()
+        /// </summary>
         private static void Ping()
         {
             bool res;
