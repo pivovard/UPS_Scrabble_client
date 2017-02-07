@@ -320,6 +320,10 @@ namespace UPS_Scrabble_client
 
                 case "PING":
                     break;
+
+                case "ERR":
+                    MessageBox.Show("Error: " + type[1]);
+                    break;
                     
                 default:
                     Disconnect();
