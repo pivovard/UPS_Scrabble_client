@@ -79,6 +79,12 @@ namespace UPS_Scrabble_client
                 return false;
             }
 
+            if(nick.Contains(':') || nick.Contains(';') || nick.Contains('\\'))
+            {
+                MessageBox.Show("Nick contains ilegal characters!");
+                return false;
+            }
+
             Network.nick = nick;
             Network.n = n;
 
