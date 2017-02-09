@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -105,6 +106,7 @@ namespace UPS_Scrabble_client
             catch (Exception e)
             {
                 MessageBox.Show("Couldn't connect to the server. Error:\n" + e);
+                Trace.WriteLine(DateTime.Now.ToString() + ": Error: " + e.Message);
                 return false;
             }
             
@@ -186,7 +188,18 @@ namespace UPS_Scrabble_client
                     if (i != -1)
                         msg = msg.Substring(0, i);
                     Console.WriteLine("Recv: " + msg);
-                    Resolve(msg);
+                    Trace.WriteLine(DateTime.Now.ToString() + ": Recv: " + msg);
+
+                    try
+                    {
+                        Resolve(msg);
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show("Error in received message: " + e.Message);
+                        Trace.WriteLine(DateTime.Now.ToString() + ": Error: " + e.Message);
+                        Send("ERR:0");
+                    }
                 }
 
                 if (size < 1)
@@ -210,6 +223,7 @@ namespace UPS_Scrabble_client
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                Trace.WriteLine(DateTime.Now.ToString() + ": Error: " + e.Message);
             }
         }
 
@@ -230,7 +244,7 @@ namespace UPS_Scrabble_client
                 //nick error
                 case "NICKERR":
                     if (type[1] == "USE") MessageBox.Show("Nick unavaible.");
-                    if (type[1] == "CHAR") MessageBox.Show("Nick contains ilegal characters!");
+                    if (type[1] == "CHAR") MessageBox.Show("Nick contains illegal characters!");
                     //Disconnect
                     Disconnect();
                     break;
@@ -351,6 +365,7 @@ namespace UPS_Scrabble_client
         public static bool Send(string msg)
         {
             Console.WriteLine("Send: " + msg);
+            Trace.WriteLine(DateTime.Now.ToString() + ": Send: " + msg);
             buffer = Encoding.ASCII.GetBytes(msg + "\n");
 
             try
@@ -360,6 +375,7 @@ namespace UPS_Scrabble_client
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                Trace.WriteLine(DateTime.Now.ToString() + ": Error: " + e.Message);
                 return false;
             }
             return true;
